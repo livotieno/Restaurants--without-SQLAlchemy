@@ -20,7 +20,7 @@ class Customer:
         return list({review.restaurant for review in self.reviews})
 
     def add_review(self, restaurant, rating):
-        new_review = Review(self, restaurant, rating)
+        new_review = "Review(self, restaurant, rating)"
         self.reviews.append(new_review)
 
     @classmethod
