@@ -1,39 +1,28 @@
-from Restaurants import Review
-from Restaurants import Customer
-
 class Restaurant:
     all_restaurants = []
-    def __init__(self, restaurant_name):
-        if type(restaurant_name) not in (str,):
-            raise ValueError("Wrong Input")            
-        self._name = restaurant_name
-        Restaurant.add_all_instances(self)
 
-    def name(self): 
-        return(self._name)
-    
-    def restaurant_name_setter(self, new_rest_name): 
-        raise AttributeError("Name cannot be changed after initialization")
-        pass    
+    def __init__(self, name):
+        self.name = name
+        self.reviews = []
+        Restaurant.all_restaurants.append(self)
+
+    def name(self):
+        return self.name
 
     def reviews(self):
-        return(Review.all_reviews)
-        pass
+        return self.reviews
 
     def customers(self):
-        
-        unique_names = list(set(Customer.all_names))
-       
-        print(unique_names)
-        pass
+        return list({review.customer for review in self.reviews})
 
     @classmethod
-    def add_all_instances(cls, new_restaurant):
-        cls.all_restaurants.append(new_restaurant)
+    def all(cls):
+        return cls.all_restaurants
 
-    restaurant_name = property(name, restaurant_name_setter)
-
-
-restaurant_0 = Restaurant("Spicy") 
-restaurant_1 = Restaurant("Five_Star") 
-restaurant_2 = Restaurant("Big_Square") 
+    def average_star_rating(self):
+        total_ratings = sum(review.rating for review in self.reviews)
+        num_reviews = len(self.reviews)
+        if num_reviews > 0:
+            return total_ratings / num_reviews
+        else:
+            return 0  

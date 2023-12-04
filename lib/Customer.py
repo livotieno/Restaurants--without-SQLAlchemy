@@ -1,53 +1,46 @@
-from Restaurant import Restaurant
-
 class Customer:
-    all_instances = []
-    all_names = []
+    all_customers = []
 
-    def __init__(self, first_name, last_name):
-        self.first_name = first_name
-        self.last_name = last_name
-        self.fullName = first_name + " " + last_name
-        Customer.all(self)
-        Customer.allNamesHandler(self)
-        
+    def __init__(self, given_name, family_name):
+        self.given_name = given_name
+        self.family_name = family_name
+        self.reviews = []
+        Customer.all_customers.append(self)
+
     def given_name(self):
-        return(self.first_name)
-    
+        return self.given_name
+
     def family_name(self):
-        return(self.last_name)
-    
+        return self.family_name
+
     def full_name(self):
-        return(f"{self.first_name} {self.last_name}")
-        pass
+        return f"{self.given_name} {self.family_name}"
 
     def restaurants(self):
-        
-        pass
+        return list({review.restaurant for review in self.reviews})
 
-    def add_review(restaurant, rating):
-        pass
-
-    @classmethod
-    def all(cls, new_customer_instance):
-        cls.all_instances.append(new_customer_instance)
-        pass
+    def add_review(self, restaurant, rating):
+        new_review = Review(self, restaurant, rating)
+        self.reviews.append(new_review)
 
     @classmethod
-    def print_all_instances(cls):
-        print([fullname.fullName for fullname in cls.all_instances])
+    def all(cls):
+        return cls.all_customers
+
+    def num_reviews(self):
+        return len(self.reviews)
 
     @classmethod
-    def allNamesHandler(cls, new_customer):
-        cls.all_names.append(new_customer.fullName)
+    def find_by_name(cls, name):
+        for customer in cls.all_customers:
+            if customer.full_name().lower() == name.lower():
+                return customer
+        return None
 
     @classmethod
-    def allNamesPrinter(cls):
-        print([fullName for fullName in cls.all_names])
-
-
-
-customer1 = Customer("Gad", "Ongoro")
-customer2 = Customer("Muhammad", "Gaddafi") 
-customer3 = Customer("Allahdu", "Jamil") 
-customer4 = Customer("Allahdu", "Jamil") 
+    def find_all_by_given_name(cls, name):
+        return [
+            customer
+            for customer in cls.all_customers
+            if customer.given_name.lower() == name.lower()
+        ]
